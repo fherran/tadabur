@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="Tadabur: A Large-Scale Quran Audio Dataset — 1200+ hours from 700 reciters with word-level alignment.">
+  <meta name="keywords" content="quran, audio, dataset, tadabur, arabic audio, ASR, speech recognition">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tadabur: A Large-Scale Quran Audio Dataset</title>
+  <link rel="icon" type="image/x-icon" href="./static/images/tadabur_logo.ico">
+
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --ink:       #1c1f1e;
+      --parchment: #f5f0e8;
+      --cream:     #faf7f2;
+      --sand:      #e6ddd0;
+      --sienna:    #a27b5c;
+      --gold:      #c8a97a;
+      --gold-lt:   #dfc49a;
+      --teal:      #374440;
+      --teal-lt:   #4e6460;
+      --rule:      rgba(162,123,92,0.18);
+      --shadow:    0 4px 28px rgba(28,31,30,0.10);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    /* ── GEOMETRIC PATTERN BACKGROUND ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image:
+        repeating-linear-gradient(45deg, transparent, transparent 34px, rgba(162,123,92,0.025) 34px, rgba(162,123,92,0.025) 35px),
+        repeating-linear-gradient(-45deg, transparent, transparent 34px, rgba(162,123,92,0.025) 34px, rgba(162,123,92,0.025) 35px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    section, header, footer { position: relative; z-index: 1; }
+
+    /* ── NAVIGATION ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(247,242,232,0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--rule);
+      padding: 0 2.5rem;
+    }
+    .nav-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 58px;
+    }
+    .nav-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem; font-weight: 600;
+      color: var(--sienna); text-decoration: none;
+      letter-spacing: 0.04em;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.82rem; font-weight: 400; letter-spacing: 0.07em;
+      text-transform: uppercase; color: var(--ink); text-decoration: none;
+      opacity: 0.7; transition: opacity 0.2s, color 0.2s;
+    }
+    .nav-links a:hover { opacity: 1; color: var(--sienna); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 92vh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 5rem 2rem 4rem;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(200,146,42,0.10) 0%, transparent 65%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(55,68,64,0.07) 0%, transparent 55%);
+    }
+    .hero-inner {
+      max-width: 820px; width: 100%; text-align: center;
+    }
+    .hero-logo {
+      margin: 0 auto 2rem;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-logo img { width: 150px; height: 150px; object-fit: contain; }
+
+    .hero-eyebrow {
+      font-size: 0.75rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 1rem; font-weight: 500;
+    }
+    h1.hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      font-weight: 600; line-height: 1.15;
+      color: var(--ink); margin-bottom: 0.5rem;
+    }
+    h1.hero-title em { color: var(--sienna); font-style: normal; }
+    .hero-subtitle {
+      font-size: 1.05rem; color: rgba(26,20,16,0.6);
+      margin-bottom: 0.8rem; font-weight: 300;
+    }
+    .hero-author {
+      font-size: 0.95rem; margin-bottom: 2.5rem;
+    }
+    .hero-author a {
+      color: var(--sienna); font-weight: 400;
+      text-decoration: none; border-bottom: 1px dotted var(--gold);
+    }
+
+    .badge-row {
+      display: flex; flex-wrap: wrap; gap: 0.75rem;
+      justify-content: center; margin-bottom: 3rem;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.55rem 1.3rem;
+      border-radius: 2rem;
+      font-size: 0.82rem; font-weight: 400; letter-spacing: 0.04em;
+      text-decoration: none;
+      transition: transform 0.18s, box-shadow 0.18s;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .badge:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.13); }
+    .badge-dark { background: var(--ink); color: var(--parchment); }
+    .badge-sienna { background: var(--sienna); color: var(--parchment); }
+    .badge-teal { background: var(--teal); color: var(--parchment); }
+    .badge i, .badge img { font-size: 1em; width: 1em; height: 1em; }
+
+    .hero-stats {
+      display: flex; justify-content: center; gap: 0; flex-wrap: wrap;
+      border: 1px solid var(--rule);
+      border-radius: 1.2rem;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .hero-stat {
+      flex: 1 1 160px;
+      padding: 1.4rem 1rem;
+      background: rgba(255,255,255,0.55);
+      border-right: 1px solid var(--rule);
+      text-align: center;
+    }
+    .hero-stat:last-child { border-right: none; }
+    .hero-stat-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem; font-weight: 700; color: var(--sienna);
+      line-height: 1;
+    }
+    .hero-stat-lbl {
+      font-size: 0.75rem; text-transform: uppercase;
+      letter-spacing: 0.1em; color: rgba(26,20,16,0.55);
+      margin-top: 0.3rem;
+    }
+
+    /* ── ORNAMENT DIVIDER ── */
+    .ornament {
+      text-align: center; padding: 2rem 0;
+      color: var(--gold); font-size: 1.1rem;
+      opacity: 0.5; letter-spacing: 0.5em;
+    }
+
+    /* ── SECTION LAYOUT ── */
+    .section {
+      padding: 4.5rem 2rem;
+    }
+    .section-inner {
+      max-width: 800px; margin: 0 auto;
+    }
+    .section-inner-wide {
+      max-width: 1060px; margin: 0 auto;
+    }
+    .section-alt {
+      background: rgba(232,223,200,0.22);
+      border-top: 1px solid var(--rule);
+      border-bottom: 1px solid var(--rule);
+    }
+
+    h2.section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.7rem, 3.5vw, 2.4rem);
+      font-weight: 600; color: var(--ink);
+      margin-bottom: 0.35rem;
+    }
+    h2.section-title::after {
+      content: ''; display: block;
+      width: 48px; height: 2px;
+      background: var(--gold); margin-top: 0.55rem;
+    }
+    h3.subsection {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 600;
+      color: var(--sienna); margin: 2rem 0 0.6rem;
+    }
+    p { margin-bottom: 1rem; font-size: 0.975rem; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── ABSTRACT ── */
+    .abstract-text {
+      font-size: 1.02rem; line-height: 1.85;
+      border-left: 3px solid var(--gold);
+      padding-left: 1.5rem;
+      color: rgba(26,20,16,0.85);
+    }
+    .abstract-text strong { color: var(--sienna); font-weight: 500; }
+
+    /* ── COMPARISON TABLE ── */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 0.9rem;
+      box-shadow: var(--shadow);
+      margin-top: 2rem;
+    }
+    table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    thead tr { background: var(--sienna); color: var(--parchment); }
+    thead th {
+      padding: 0.9rem 1.2rem; text-align: left;
+      font-weight: 500; letter-spacing: 0.04em;
+      font-family: 'DM Sans', sans-serif;
+    }
+    tbody tr { background: rgba(255,255,255,0.6); border-bottom: 1px solid var(--rule); }
+    tbody tr:last-child {
+      background: rgba(200,146,42,0.12);
+      font-weight: 500;
+    }
+    tbody tr.highlight-row { background: rgba(200,146,42,0.12); }
+    tbody td { padding: 0.8rem 1.2rem; }
+    .check { color: #2a7a3b; font-weight: 700; }
+    .cross  { color: #c0392b; opacity: 0.6; }
+    .ours-tag {
+      display: inline-block;
+      background: var(--sienna); color: white;
+      font-size: 0.65rem; padding: 0.1rem 0.5rem;
+      border-radius: 1rem; margin-left: 0.4rem;
+      vertical-align: middle; letter-spacing: 0.06em;
+    }
+
+    /* ── RECITER CHART ── */
+    .bar-chart {
+      display: flex; align-items: flex-end; gap: 1.5rem;
+      padding: 2rem 1.5rem 0;
+      height: 180px;
+    }
+    .bar-item {
+      display: flex; flex-direction: column; align-items: center;
+      flex: 1; gap: 0.4rem;
+    }
+    .bar-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem; font-weight: 600; color: var(--sienna);
+    }
+    .bar-fill {
+      width: 100%; border-radius: 0.4rem 0.4rem 0 0;
+      background: var(--sand);
+      transition: height 0.8s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .bar-fill.ours { background: linear-gradient(180deg, var(--gold-lt), var(--sienna)); }
+    .bar-lbl {
+      font-size: 0.72rem; color: rgba(26,20,16,0.5);
+      text-align: center; letter-spacing: 0.05em;
+    }
+    .chart-wrapper {
+      background: rgba(255,255,255,0.6);
+      border: 1px solid var(--rule);
+      border-radius: 1rem;
+      padding-bottom: 1.2rem;
+      margin-top: 1.5rem;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .chart-title {
+      font-size: 0.8rem; text-transform: uppercase;
+      letter-spacing: 0.1em; color: rgba(26,20,16,0.5);
+      text-align: center; padding: 1.2rem 0 0;
+    }
+
+    /* ── AUDIO SAMPLES ── */
+    .samples-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.6rem;
+      margin-top: 2rem;
+    }
+    @media (max-width: 760px) {
+      .samples-grid { grid-template-columns: 1fr; }
+    }
+    .sample-card {
+      background: #fff;
+      border: 1px solid var(--rule);
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(28,31,30,0.07);
+      display: flex;
+      flex-direction: column;
+    }
+    .sample-header {
+      color: white;
+      padding: 1.5rem 1.6rem 1.3rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+    .sample-header .ayah-arabic {
+      font-family: 'Noto Naskh Arabic', serif;
+      font-size: 1.3rem;
+      direction: rtl;
+      text-align: right;
+      line-height: 1.75;
+    }
+    .sample-meta {
+      font-size: 0.74rem;
+      opacity: 0.78;
+      letter-spacing: 0.03em;
+      font-weight: 300;
+    }
+    .sample-body {
+      padding: 1.2rem 1.6rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      flex: 1;
+    }
+    .sample-info-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+    }
+    .sample-tag {
+      background: var(--sand);
+      color: var(--ink);
+      border-radius: 0.35rem;
+      padding: 0.22rem 0.65rem;
+      font-size: 0.74rem;
+    }
+    .sample-tag strong {
+      color: var(--sienna);
+      font-weight: 500;
+    }
+    audio {
+      width: 100%;
+      border-radius: 0.5rem;
+      outline: none;
+      display: block;
+    }
+    audio::-webkit-media-controls-panel { background: var(--parchment); }
+
+    /* ── WHISPER MODELS ── */
+    .models-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1.8rem;
+    }
+    .model-card {
+      background: rgba(255,255,255,0.6);
+      border: 1px solid var(--rule);
+      border-radius: 0.9rem;
+      padding: 1.4rem 1.3rem;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .model-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0;
+      width: 4px; height: 100%;
+      background: var(--gold);
+    }
+    .model-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 28px rgba(26,20,16,0.12);
+    }
+    .model-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-weight: 600;
+      color: var(--sienna); margin-bottom: 0.2rem;
+    }
+    .model-base {
+      font-size: 0.74rem; color: rgba(26,20,16,0.5);
+      text-transform: uppercase; letter-spacing: 0.07em;
+      margin-bottom: 0.8rem;
+    }
+    .model-desc { font-size: 0.85rem; line-height: 1.6; }
+    .model-badge {
+      display: inline-block;
+      margin-top: 0.8rem;
+      font-size: 0.72rem; padding: 0.2rem 0.7rem;
+      border-radius: 1rem;
+      background: var(--teal); color: white;
+      letter-spacing: 0.04em;
+    }
+    .model-badge.coming { background: rgba(55,68,64,0.25); color: var(--teal); }
+    .model-badge.available { background: var(--sienna); }
+
+    /* ── PIPELINE ── */
+    .pipeline {
+      display: flex; align-items: center; flex-wrap: wrap;
+      gap: 0; margin-top: 1.8rem;
+    }
+    .pipe-step {
+      flex: 1 1 140px;
+      background: rgba(255,255,255,0.65);
+      border: 1px solid var(--rule);
+      border-radius: 0.8rem;
+      padding: 1.1rem 0.9rem;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    .pipe-arrow {
+      flex: 0 0 28px;
+      text-align: center;
+      color: var(--gold); font-size: 1.1rem;
+    }
+    .pipe-icon { font-size: 1.6rem; margin-bottom: 0.4rem; }
+    .pipe-label {
+      font-size: 0.78rem; font-weight: 500;
+      text-transform: uppercase; letter-spacing: 0.07em;
+      color: var(--sienna);
+    }
+    .pipe-desc { font-size: 0.72rem; color: rgba(26,20,16,0.5); margin-top: 0.2rem; }
+
+    /* ── BIBTEX ── */
+    .bibtex-wrap {
+      position: relative;
+      background: #111a16;
+      border-radius: 1rem;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+    .bibtex-header {
+      background: #1e2820;
+      padding: 0.6rem 1.2rem;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .bibtex-header span {
+      font-size: 0.72rem; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #8cbfb0;
+    }
+    .copy-btn {
+      cursor: pointer;
+      background: none; border: 1px solid rgba(140,191,176,0.4);
+      color: #8cbfb0; font-size: 0.72rem;
+      padding: 0.25rem 0.7rem; border-radius: 0.35rem;
+      letter-spacing: 0.06em;
+      transition: all 0.18s; font-family: 'DM Sans', sans-serif;
+    }
+    .copy-btn:hover { background: rgba(140,191,176,0.1); }
+    pre.bibtex-code {
+      padding: 1.4rem 1.5rem;
+      color: #c4dcd6;
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem; line-height: 1.7;
+      overflow-x: auto;
+    }
+    .bt-key { color: #f08080; }
+    .bt-val { color: #a5c8b8; }
+    .bt-field { color: #8cbfb0; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      color: rgba(247,242,232,0.55);
+      padding: 3rem 2rem;
+      font-size: 0.82rem;
+      text-align: center;
+      border-top: 1px solid rgba(200,146,42,0.25);
+    }
+    footer a { color: var(--gold-lt); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    .footer-inner { max-width: 700px; margin: 0 auto; }
+    .footer-links {
+      display: flex; justify-content: center; gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .footer-links a { font-size: 1.1rem; opacity: 0.7; transition: opacity 0.18s; }
+    .footer-links a:hover { opacity: 1; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up {
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards;
+    }
+    .delay-1 { animation-delay: 0.15s; }
+    .delay-2 { animation-delay: 0.3s; }
+    .delay-3 { animation-delay: 0.45s; }
+    .delay-4 { animation-delay: 0.6s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 680px) {
+      .nav-links { display: none; }
+      .hero-stats { flex-direction: column; }
+      .hero-stat { border-right: none; border-bottom: 1px solid var(--rule); }
+      .pipeline { flex-direction: column; }
+      .pipe-arrow { transform: rotate(90deg); }
+      .bar-chart { height: 140px; gap: 0.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="nav-brand">Tadabur</a>
+    <ul class="nav-links">
+      <li><a href="#abstract">Abstract</a></li>
+      <li><a href="#statistics">Dataset</a></li>
+      <li><a href="#samples">Samples</a></li>
+      <li><a href="#models">Models</a></li>
+      <li><a href="#bibtex">Cite</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-inner">
+
+    <div class="hero-logo fade-up">
+      <img src="./static/images/tadabur_logo.png" alt="Tadabur">
+    </div>
+
+    <h1 class="hero-title fade-up delay-1">
+      <em>Tadabur</em>: A Large-Scale<br>Quran Audio Dataset
+    </h1>
+    <p class="hero-subtitle fade-up delay-2">
+      The most comprehensive and richly annotated Qur'anic recitation corpus to date
+    </p>
+    <p class="hero-author fade-up delay-2">
+      <a href="https://linktr.ee/izfaisal">Faisal Alherran</a>
+      &nbsp;·&nbsp; Riyadh, Saudi Arabia
+    </p>
+
+    <div class="badge-row fade-up delay-3">
+      <a href="https://arxiv.org/abs/2026.tadabur" class="badge badge-dark">
+        <i class="fas fa-file-pdf"></i> Paper
+      </a>
+      <a href="https://github.com/fherran/tadabur" class="badge badge-dark">
+        <i class="fab fa-github"></i> Code
+      </a>
+      <a href="https://huggingface.co/datasets/FaisaI/tadabur" class="badge badge-sienna">
+        <img src="https://huggingface.co/front/assets/huggingface_logo-noborder.svg" alt="HF">
+        Dataset
+      </a>
+      <a href="https://huggingface.co/FaisaI" class="badge badge-teal">
+        <i class="fas fa-microphone"></i> Models
+      </a>
+    </div>
+
+    <div class="hero-stats fade-up delay-4">
+      <div class="hero-stat">
+        <div class="hero-stat-val">1200+</div>
+        <div class="hero-stat-lbl">Hours of Audio</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">700</div>
+        <div class="hero-stat-lbl">Distinct Reciters</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">352K</div>
+        <div class="hero-stat-lbl">Verse-level Files</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">114</div>
+        <div class="hero-stat-lbl">Surahs Covered</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-val">6,236</div>
+        <div class="hero-stat-lbl">Unique Ayahs</div>
+      </div>
+    </div>
+
+  </div>
+</header>
+
+<div class="ornament">· · · ✦ · · ·</div>
+
+<!-- ABSTRACT -->
+<section class="section" id="abstract">
+  <div class="section-inner">
+    <h2 class="section-title">Abstract</h2>
+    <div class="abstract-text" style="margin-top: 1.5rem;">
+      <p>
+        Despite growing interest in Quranic data research, existing Quran datasets remain limited in both
+        scale and diversity. To address this gap, we present <strong>Tadabur</strong>, a large-scale Quran
+        audio dataset comprising more than <strong>1,200+ hours</strong> of recitation audio from over
+        <strong>700 distinct reciters</strong>, providing substantial variation in recitation styles, vocal
+        characteristics, and recording conditions.
+      </p>
+      <p>
+        Tadabur includes complete coverage of all <strong>114 surahs</strong> and <strong>6,236 ayahs</strong>
+        of the Qur'an, spanning styles such as <em>murattal</em> and <em>mujawwad</em>. Each file is
+        accompanied by automatically derived word-level temporal alignments and structured metadata in a
+        consistent JSON schema.
+      </p>
+      <p>
+        This diversity makes Tadabur a comprehensive and representative resource for Quranic speech
+        research—enabling advances in ASR, tajwīd-aware modeling, reciter identification, and prosodic
+        analysis. By significantly expanding both the total duration and variability of available Quran data,
+        Tadabur aims to support future research and facilitate the development of standardized Quranic
+        speech benchmarks.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- PIPELINE -->
+<section class="section section-alt" id="pipeline">
+  <div class="section-inner-wide">
+    <h2 class="section-title">Dataset Pipeline</h2>
+    <p style="margin-top:0.8rem; max-width:640px; font-size:0.95rem;">
+      A fully automated, multi-stage process transforms raw long-form recitations into clean,
+      verse-level annotated audio files.
+    </p>
+
+    <div class="pipeline">
+      <div class="pipe-step">
+        <div class="pipe-icon">🌐</div>
+        <div class="pipe-label">Collection</div>
+        <div class="pipe-desc">Public Qur'an repositories &amp; archives</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="pipe-icon">🤖</div>
+        <div class="pipe-label">LLM Metadata</div>
+        <div class="pipe-desc">Surah &amp; reciter extraction via LLM</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="pipe-icon">🎙️</div>
+        <div class="pipe-label">WhisperX Align</div>
+        <div class="pipe-desc">Word-level timestamps &amp; AAM</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="pipe-icon">✂️</div>
+        <div class="pipe-label">Boundary Detect</div>
+        <div class="pipe-desc">Recitation-stop segmenter</div>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="pipe-icon">🧹</div>
+        <div class="pipe-label">Curation</div>
+        <div class="pipe-desc">ASR filtering &amp; deduplication</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATISTICS -->
+<section class="section" id="statistics">
+  <div class="section-inner-wide">
+    <h2 class="section-title">Dataset Statistics</h2>
+    <p style="margin-top:0.8rem; max-width:680px;">
+      Tadabur surpasses all prior publicly available Quranic datasets by a wide margin in scale,
+      reciter diversity, and annotation richness.
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Dataset</th>
+            <th>Samples</th>
+            <th>Reciters</th>
+            <th>Transcription</th>
+            <th>Word-Level Alignment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Quran Recitations (Kaggle)</td>
+            <td>6,689</td>
+            <td>12</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>Quran Speech-to-Text (SLR132)</td>
+            <td>226,129</td>
+            <td>30</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr>
+            <td>Buraaq Quran Audio–Text</td>
+            <td>187,080</td>
+            <td>30</td>
+            <td class="check">✓</td>
+            <td class="cross">✗</td>
+          </tr>
+          <tr class="highlight-row">
+            <td><strong>Tadabur</strong> <span class="ours-tag">Ours</span></td>
+            <td><strong>352,000</strong></td>
+            <td><strong>700</strong></td>
+            <td class="check"><strong>✓</strong></td>
+            <td class="check"><strong>✓</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Bar chart: Reciters -->
+    <div class="chart-wrapper" style="max-width:540px; margin-top:2.5rem;">
+      <p class="chart-title">Number of Reciters Across Quranic Datasets</p>
+      <div class="bar-chart" id="bar-chart">
+        <div class="bar-item">
+          <span class="bar-val">12</span>
+          <div class="bar-fill" style="height:8px;"></div>
+          <span class="bar-lbl">Kaggle</span>
+        </div>
+        <div class="bar-item">
+          <span class="bar-val">30</span>
+          <div class="bar-fill" style="height:20px;"></div>
+          <span class="bar-lbl">SLR132</span>
+        </div>
+        <div class="bar-item">
+          <span class="bar-val">30</span>
+          <div class="bar-fill" style="height:20px;"></div>
+          <span class="bar-lbl">Buraaq</span>
+        </div>
+        <div class="bar-item">
+          <span class="bar-val">700</span>
+          <div class="bar-fill ours" style="height:130px;"></div>
+          <span class="bar-lbl">Tadabur</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AUDIO SAMPLES -->
+<section class="section section-alt" id="samples">
+  <div class="section-inner-wide">
+    <h2 class="section-title">Audio Samples</h2>
+    <p style="margin-top:0.8rem; max-width:680px;">
+      Each verse-level file is paired with a structured JSON annotation containing word-level
+      timestamps, metadata, and speaker information. Two representative samples are shown below.
+    </p>
+
+    <div class="samples-grid">
+
+      <!-- Sample 1 -->
+      <div class="sample-card">
+        <div class="sample-header" style="background: linear-gradient(160deg, #a27b5c 0%, #7a5a40 100%);">
+          <div class="ayah-arabic">أَفَلَا يَتَدَبَّرُونَ ٱلْقُرْءَانَ ۚ وَلَوْ كَانَ مِنْ عِندِ غَيْرِ ٱللَّهِ لَوَجَدُوا۟ فِيهِ ٱخْتِلَـٰفًا كَثِيرًا</div>
+        </div>
+        <div class="sample-body">
+          <div class="sample-info-row">
+            <span class="sample-tag"><strong>Reciter ID</strong> 88</span>
+            <span class="sample-tag"><strong>Surah</strong> 3 · Ayah 82</span>
+            <span class="sample-tag"><strong>Duration</strong> 10.9s</span>
+          </div>
+          <audio controls>
+            <source src="../samples/audio/iqraa_spk0088_S3_A82_db1f8e71_000003.wav" type="audio/wav">
+          </audio>
+        </div>
+      </div>
+
+      <!-- Sample 2 -->
+      <div class="sample-card">
+        <div class="sample-header" style="background: linear-gradient(160deg, #374440 0%, #243030 100%);">
+          <div class="ayah-arabic">أَفَلَا يَتَدَبَّرُونَ ٱلْقُرْءَانَ أَمْ عَلَىٰ قُلُوبٍ أَقْفَالُهَآ</div>
+        </div>
+        <div class="sample-body">
+          <div class="sample-info-row">
+            <span class="sample-tag"><strong>Reciter ID</strong> 94</span>
+            <span class="sample-tag"><strong>Surah</strong> 46 · Ayah 24</span>
+            <span class="sample-tag"><strong>Duration</strong> 5.5s</span>
+          </div>
+          <audio controls>
+            <source src="../samples/audio/iqraa_spk0094_S46_A24_161843c2_000000.wav" type="audio/wav">
+          </audio>
+        </div>
+      </div>
+
+    </div><!-- /samples-grid -->
+  </div>
+</section>
+
+<!-- WHISPER FINE-TUNED MODELS -->
+<section class="section" id="models">
+  <div class="section-inner-wide">
+    <h2 class="section-title">Fine-Tuned Whisper Models</h2>
+    <p style="margin-top:0.8rem; max-width:720px;">
+      Alongside the dataset, we release Whisper models fine-tuned on Tadabur for Quranic ASR.
+      These models are domain-adapted to handle prolonged phoneme durations, tajwīd rules,
+      melodic articulation, and the wide acoustic diversity unique to Qur'anic recitation.
+    </p>
+
+    <div class="models-grid">
+
+      <div class="model-card">
+        <div class="model-name">Tadabur-Whisper-Large</div>
+        <div class="model-base">Base: Whisper Large v3</div>
+        <div class="model-desc">
+          Full-size model fine-tuned on the complete Tadabur corpus. Highest accuracy for
+          verse-level transcription across diverse recitation styles and reciters.
+        </div>
+        <a href="https://huggingface.co/FaisaI" class="model-badge available">
+          Available on HF
+        </a>
+      </div>
+
+      <div class="model-card" style="--card-accent: var(--teal);">
+        <div class="model-name">Tadabur-Whisper-Medium</div>
+        <div class="model-base">Base: Whisper Medium</div>
+        <div class="model-desc">
+          Balanced model offering strong performance with a smaller footprint. Suitable for
+          deployment in resource-constrained environments and mobile applications.
+        </div>
+        <a href="https://huggingface.co/FaisaI" class="model-badge available">
+          Available on HF
+        </a>
+      </div>
+
+      <div class="model-card">
+        <div class="model-name">Tadabur-Whisper-Small</div>
+        <div class="model-base">Base: Whisper Small</div>
+        <div class="model-desc">
+          Lightweight fine-tuned model optimized for fast inference and embedded systems while
+          maintaining meaningful Quranic ASR capability.
+        </div>
+        <span class="model-badge coming">Coming Soon</span>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- BIBTEX -->
+<section class="section section-alt" id="bibtex">
+  <div class="section-inner">
+    <h2 class="section-title">Citation</h2>
+    <p style="margin-top:0.8rem; margin-bottom:1.5rem;">
+      If you use Tadabur in your research, please cite:
+    </p>
+    <div class="bibtex-wrap">
+      <div class="bibtex-header">
+        <span>BibTeX</span>
+        <button class="copy-btn" onclick="copyBibtex()">
+          <i class="fas fa-copy"></i> Copy
+        </button>
+      </div>
+      <pre class="bibtex-code" id="bibtex-text"><span class="jp">@</span><span class="bt-key">misc</span><span class="jp">{</span>alherran2026tadabur<span class="jp">,</span>
+  <span class="bt-field">author</span>    <span class="jp">=</span> <span class="bt-val">{Alherran, Faisal}</span><span class="jp">,</span>
+  <span class="bt-field">title</span>     <span class="jp">=</span> <span class="bt-val">{Tadabur: A Large-Scale Quran Audio Dataset}</span><span class="jp">,</span>
+  <span class="bt-field">year</span>      <span class="jp">=</span> <span class="bt-val">{2026}</span><span class="jp">,</span>
+  <span class="bt-field">url</span>       <span class="jp">=</span> <span class="bt-val">{https://github.com/fherran/tadabur}</span><span class="jp">,</span>
+  <span class="bt-field">note</span>      <span class="jp">=</span> <span class="bt-val">{HuggingFace: huggingface.co/datasets/FaisaI/tadabur}</span>
+<span class="jp">}</span></pre>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-links">
+      <a href="https://github.com/fherran/tadabur" title="GitHub">
+        <i class="fab fa-github"></i>
+      </a>
+      <a href="https://huggingface.co/datasets/FaisaI/tadabur" title="Hugging Face">
+        <i class="fas fa-database"></i>
+      </a>
+      <a href="/cdn-cgi/l/email-protection#5b3a37333e29293a353d3a32283a371b3c363a323775383436" title="Email">
+        <i class="fas fa-envelope"></i>
+      </a>
+    </div>
+    <p>
+      <strong style="color:rgba(247,242,232,0.8);">Tadabur</strong> · A Large-Scale Quran Audio Dataset ·
+      <a href="https://github.com/fherran/tadabur">github.com/fherran/tadabur</a>
+    </p>
+    <p style="margin-top:0.5rem; font-size:0.76rem;">
+      Released under an open license for research and educational use. Users must engage with Qur'anic content respectfully. 
+      Website template adapted from
+      <a href="https://nerfies.github.io">Nerfies</a>.
+    </p>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Copy BibTeX
+  function copyBibtex() {
+    const raw = `@misc{alherran2026tadabur,\n  author    = {Alherran, Faisal},\n  title     = {Tadabur: A Large-Scale Quran Audio Dataset},\n  year      = {2026},\n  url       = {https://github.com/fherran/tadabur},\n  note      = {HuggingFace: huggingface.co/datasets/FaisaI/tadabur}\n}`;
+    navigator.clipboard.writeText(raw).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+      setTimeout(() => { btn.innerHTML = '<i class="fas fa-copy"></i> Copy'; }, 2000);
+    });
+  }
+
+  // Animate bars on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const bars = e.target.querySelectorAll('.bar-fill');
+        bars.forEach(b => {
+          const h = b.style.height;
+          b.style.height = '0';
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => { b.style.height = h; });
+          });
+        });
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+
+  const chart = document.getElementById('bar-chart');
+  if (chart) observer.observe(chart);
+
+  // Fade-up on scroll for cards
+  const fadeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+        fadeObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.sample-card, .model-card, .pipe-step').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    fadeObserver.observe(el);
+  });
+</script>
+
+</body>
+</html>

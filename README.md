@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="images/tadabur_logo.png" width="120" alt="Tadabur"><br><br>
+  <img src="static/images/tadabur_logo.png" width="120" alt="Tadabur"><br><br>
 
   # Tadabur
 

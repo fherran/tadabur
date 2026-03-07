@@ -77,6 +77,9 @@ Whisper models fine-tuned on Tadabur for Qur'anic ASR, available on HuggingFace:
 ```
 
 ---
+## Contact
+
+For questions or collaboration, feel free to reach out on [LinkedIn](https://www.linkedin.com/in/faisal-alherran-caie/).
 
 <div align="center">
   <sub>Released under CC BY-NC 4.0 · For research and educational use only · Please engage with Qur'anic content respectfully.</sub>

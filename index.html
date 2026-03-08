@@ -572,24 +572,20 @@
 
     <div class="hero-stats fade-up delay-4">
       <div class="hero-stat">
-        <div class="hero-stat-val">1200+</div>
+        <div class="hero-stat-val">...+</div>
         <div class="hero-stat-lbl">Hours of Audio</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-val">700</div>
+        <div class="hero-stat-val">...</div>
         <div class="hero-stat-lbl">Distinct Reciters</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-val">352K</div>
+        <div class="hero-stat-val">...</div>
         <div class="hero-stat-lbl">Verse-level Files</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-val">114</div>
-        <div class="hero-stat-lbl">Surahs Covered</div>
-      </div>
-      <div class="hero-stat">
-        <div class="hero-stat-val">6,236</div>
-        <div class="hero-stat-lbl">Unique Ayahs</div>
+        <div class="hero-stat-val">113</div>
+        <div class="hero-stat-lbl">Surahs Covered (without Al-Fatiha)</div>
       </div>
     </div>
 
@@ -606,13 +602,12 @@
       <p>
         Despite growing interest in Quranic data research, existing Quran datasets remain limited in both
         scale and diversity. To address this gap, we present <strong>Tadabur</strong>, a large-scale Quran
-        audio dataset comprising more than <strong>1,200+ hours</strong> of recitation audio from over
-        <strong>700 distinct reciters</strong>, providing substantial variation in recitation styles, vocal
+        audio dataset comprising more than <strong>...+ hours</strong> of recitation audio from over
+        <strong>... distinct reciters</strong>, providing substantial variation in recitation styles, vocal
         characteristics, and recording conditions.
       </p>
       <p>
-        Tadabur includes complete coverage of all <strong>114 surahs</strong> and <strong>6,236 ayahs</strong>
-        of the Qur'an, spanning styles such as <em>murattal</em> and <em>mujawwad</em>. Each file is
+        Tadabur includes complete coverage of all <strong>113 surahs (without Al-Fatiha)</strong> of the Qur'an, spanning styles such as <em>murattal</em> and <em>mujawwad</em>. Each file is
         accompanied by automatically derived word-level temporal alignments and structured metadata in a
         consistent JSON schema.
       </p>
@@ -652,7 +647,7 @@
       <div class="pipe-step">
         <div class="pipe-icon">🎙️</div>
         <div class="pipe-label">WhisperX Align</div>
-        <div class="pipe-desc">Word-level timestamps &amp; AAM</div>
+        <div class="pipe-desc">Word-level timestamps &amp; Ayah Alignment Module (AAM)</div>
       </div>
       <div class="pipe-arrow">→</div>
       <div class="pipe-step">
@@ -714,8 +709,8 @@
           </tr>
           <tr class="highlight-row">
             <td><strong>Tadabur</strong> <span class="ours-tag">Ours</span></td>
-            <td><strong>352,000</strong></td>
-            <td><strong>700</strong></td>
+            <td><strong>...</strong></td>
+            <td><strong>...</strong></td>
             <td class="check"><strong>✓</strong></td>
             <td class="check"><strong>✓</strong></td>
           </tr>
@@ -724,7 +719,7 @@
     </div>
 
     <!-- Bar chart: Reciters -->
-    <div class="chart-wrapper" style="max-width:540px; margin-top:2.5rem;">
+    <div class="chart-wrapper" style="max-width:540px; margin: 2.5rem auto 0 auto;">
       <p class="chart-title">Number of Reciters Across Quranic Datasets</p>
       <div class="bar-chart" id="bar-chart">
         <div class="bar-item">
@@ -743,7 +738,7 @@
           <span class="bar-lbl">Buraaq</span>
         </div>
         <div class="bar-item">
-          <span class="bar-val">700</span>
+          <span class="bar-val">...</span>
           <div class="bar-fill ours" style="height:130px;"></div>
           <span class="bar-lbl">Tadabur</span>
         </div>

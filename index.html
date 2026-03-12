@@ -571,15 +571,15 @@
 
     <div class="hero-stats fade-up delay-4">
       <div class="hero-stat">
-        <div class="hero-stat-val">...+</div>
+        <div class="hero-stat-val">1400+</div>
         <div class="hero-stat-lbl">Hours of Audio</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-val">...</div>
+        <div class="hero-stat-val">600+</div>
         <div class="hero-stat-lbl">Distinct Reciters</div>
       </div>
       <div class="hero-stat">
-        <div class="hero-stat-val">...</div>
+        <div class="hero-stat-val">365,000+</div>
         <div class="hero-stat-lbl">Verse-level Files</div>
       </div>
       <div class="hero-stat">
@@ -601,8 +601,8 @@
       <p>
         Despite growing interest in Quranic data research, existing Quran datasets remain limited in both
         scale and diversity. To address this gap, we present <strong>Tadabur</strong>, a large-scale Quran
-        audio dataset comprising more than <strong>...+ hours</strong> of recitation audio from over
-        <strong>... distinct reciters</strong>, providing substantial variation in recitation styles, vocal
+        audio dataset comprising more than <strong>1400+ hours</strong> of recitation audio from over
+        <strong>600 distinct reciters</strong>, providing substantial variation in recitation styles, vocal
         characteristics, and recording conditions.
       </p>
       <p>
@@ -708,8 +708,8 @@
           </tr>
           <tr class="highlight-row">
             <td><strong>Tadabur</strong> <span class="ours-tag">Ours</span></td>
-            <td><strong>...</strong></td>
-            <td><strong>...</strong></td>
+            <td><strong>365,000+</strong></td>
+            <td><strong>600+</strong></td>
             <td class="check"><strong>✓</strong></td>
             <td class="check"><strong>✓</strong></td>
           </tr>
@@ -737,7 +737,7 @@
           <span class="bar-lbl">Buraaq</span>
         </div>
         <div class="bar-item">
-          <span class="bar-val">...</span>
+          <span class="bar-val">600+</span>
           <div class="bar-fill ours" style="height:130px;"></div>
           <span class="bar-lbl">Tadabur</span>
         </div>
@@ -808,13 +808,13 @@
     <div class="models-grid">
 
       <div class="model-card">
-        <div class="model-name">Tadabur-Whisper-Large</div>
-        <div class="model-base">Base: Whisper Large v3</div>
+        <div class="model-name">Tadabur-Whisper-Small</div>
+        <div class="model-base">Base: Whisper Small</div>
         <div class="model-desc">
-          Full-size model fine-tuned on the complete Tadabur corpus. Highest accuracy for
-          verse-level transcription across diverse recitation styles and reciters.
+          Lightweight fine-tuned model optimized for fast inference and embedded systems while
+          maintaining meaningful Quranic ASR capability.
         </div>
-        <a href="https://huggingface.co/FaisaI" class="model-badge available">
+        <a href="https://huggingface.co/FaisaI/tadabur-Whisper-Small" class="model-badge available">
           Available on HF
         </a>
       </div>
@@ -822,22 +822,12 @@
       <div class="model-card" style="--card-accent: var(--teal);">
         <div class="model-name">Tadabur-Whisper-Medium</div>
         <div class="model-base">Base: Whisper Medium</div>
-        <div class="model-desc">
-          Balanced model offering strong performance with a smaller footprint. Suitable for
-          deployment in resource-constrained environments and mobile applications.
-        </div>
-        <a href="https://huggingface.co/FaisaI" class="model-badge available">
-          Available on HF
-        </a>
+        <span class="model-badge coming">Coming Soon</span>
       </div>
 
       <div class="model-card">
-        <div class="model-name">Tadabur-Whisper-Small</div>
-        <div class="model-base">Base: Whisper Small</div>
-        <div class="model-desc">
-          Lightweight fine-tuned model optimized for fast inference and embedded systems while
-          maintaining meaningful Quranic ASR capability.
-        </div>
+        <div class="model-name">Tadabur-Whisper-Large</div>
+        <div class="model-base">Base: Whisper Large v3</div>
         <span class="model-badge coming">Coming Soon</span>
       </div>
 

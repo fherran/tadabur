@@ -16,14 +16,13 @@
 
 ## Overview
 
-**Tadabur** covers all 114 surahs and 6,236 ayahs of the Qur'an, with automatic word-level timestamp alignment and structured JSON metadata per file. It is the largest and most diverse publicly available Qur'anic speech dataset.
+Tadabur covers the entire Qur’an with automatic word-level timestamp alignment and structured JSON metadata for each file. It is the largest and most diverse publicly available Qur’anic speech dataset.
 
 | | |
 |:---|:---|
 | 🕐 Audio | ... hours |
 | 🎙️ Reciters | ... |
 | 🎵 Segments | ... verse-level files |
-| 📖 Coverage | All 114 surahs · 6,236 ayahs |
 | 🔗 Alignment | Word-level timestamps |
 
 ---
@@ -60,8 +59,7 @@ Whisper models fine-tuned on Tadabur for Qur'anic ASR, available on HuggingFace:
 
 | Model | Base | Status | Link |
 |:---|:---|:---:|:---|
-| **Tadabur-Whisper-Small** | Whisper Small | ✅ Available | [🤗 HuggingFace](https://huggingface.co/FaisaI) |
-| **Tadabur-Whisper-Medium** | Whisper Medium | 🔜 Coming Soon | - |
+| **Tadabur-Whisper-Small** | Whisper Small | ✅ Available | [🤗 HuggingFace](https://huggingface.co/FaisaI/tadabur-Whisper-Small)|
 
 ---
 

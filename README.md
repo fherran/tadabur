@@ -20,9 +20,8 @@ Tadabur covers the entire Qur’an with automatic word-level timestamp alignment
 
 | | |
 |:---|:---|
-| 🕐 Audio | ... hours |
-| 🎙️ Reciters | ... |
-| 🎵 Segments | ... verse-level files |
+| 🕐 Audio | 1400+ hours |
+| 🎙️ Reciters | 600+ |
 | 🔗 Alignment | Word-level timestamps |
 
 ---
@@ -38,9 +37,9 @@ Each example contains an audio file and a JSON metadata file:
   "ayah_id": 82,
   "word_alignments": [
     {
-      "word": "أَفَلَا",
-      "start": 0.00,
-      "end": 0.62
+      "word": "أفلا",
+      "start": 0.089,
+      "end": 0.87
     },
     ...
   ],

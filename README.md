@@ -5,7 +5,7 @@
 
   A large-scale Quran audio dataset featuring ... reciters and word-level alignment — built for Arabic speech research.
 
-  [![Paper](https://img.shields.io/badge/Paper-Read-a27b5c?style=flat-square)](https://arxiv.org/abs/2026.tadabur)
+  [![Paper](https://img.shields.io/badge/Paper-Read-a27b5c?style=flat-square)](https://arxiv.org/abs/2604.18932)
   [![Dataset](https://img.shields.io/badge/🤗_Dataset-FaisaI%2Ftadabur-c8a97a?style=flat-square)](https://huggingface.co/datasets/FaisaI/tadabur)
   [![Models](https://img.shields.io/badge/🎙_Models-FaisaI-374440?style=flat-square)](https://huggingface.co/FaisaI)
   [![License](https://img.shields.io/badge/License-CC_BY--NC_4.0-e6ddd0?style=flat-square)](https://creativecommons.org/licenses/by-nc/4.0/)

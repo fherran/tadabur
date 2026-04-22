@@ -62,14 +62,18 @@ Whisper models fine-tuned on Tadabur for Qur'anic ASR, available on HuggingFace:
 
 ---
 
-## Citation
+l Citation
 
 ```bibtex
 @misc{alherran2026tadabur,
-  author = {Alherran, Faisal},
-  title  = {Tadabur: A Large-Scale Quran Audio Dataset},
-  year   = {2026},
-  url    = {https://github.com/fherran/tadabur}
+  author        = {Alherran, Faisal},
+  title         = {Tadabur: A Large-Scale Quran Audio Dataset},
+  year          = {2026},
+  eprint        = {2604.18932},
+  archivePrefix = {arXiv},
+  primaryClass  = {cs.SD},
+  doi           = {10.48550/arXiv.2604.18932},
+  url           = {https://arxiv.org/abs/2604.18932}
 }
 ```
 
